@@ -1,0 +1,6 @@
+@Taskmasterapi_HostAddress = http://localhost:5094
+
+GET {{Taskmasterapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

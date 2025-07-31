@@ -1,0 +1,19 @@
+# Node.js (Angular)
+client/node_modules/
+client/dist/
+client/.angular/
+
+# Angular env files
+client/.env
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/*.db
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

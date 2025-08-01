@@ -1,3 +1,63 @@
-<h1>You Logged in </h1>
-<h1>Welcome to Dashboard</h1>
-<button (click)="onLogout()">Logout</button>
+<div class="container-fluid min-vh-100 d-flex flex-column p-0">
+    <!-- Fixed Header -->
+  <header class="d-flex justify-content-between align-items-center bg-primary text-white px-4 py-3">
+ 
+    <!-- Sidebar toggle button (visible only on small screens) -->
+    <button
+      class="btn btn-outline-light d-lg-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#sidebar"
+      aria-controls="sidebar"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      ☰
+    </button>
+
+    <h1 class="h5 m-0">TaskMaster</h1>
+
+    <button (click)="onLogout()" class="btn btn-light btn-sm">Logout</button>
+  </header>
+
+ <div class="row flex-grow-1 g-0">
+    <!--SideBar-->
+    <nav id="sidebar" class="col-lg-2 collapse d-lg-block bg-light p-3 border-end">
+    
+      <h5 class="mb-4">Menu</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard">🏠 Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/tasks">📝 Tasks</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/profile">👤 Profile</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+     <main class="col-lg-10 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Your Tasks</h2>
+        
+        <button class="btn btn-success btn-sm">+ Add Task</button>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-xl-4" *ngFor="let task of tasks">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+                
+              <h5 class="card-title d-flex justify-content-between align-items-center">{{ task.title }} <input  class="form-check-input"
+                        type="checkbox"
+                        [checked]="task.isCompleted"
+                         id="check-{{ task.id }}" /></h5>
+              
+              <p class="card-text">{{ task.description }}</p>
+            </div>
+            <div class="card-footer d-flex justify-content-end gap-2">
+              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

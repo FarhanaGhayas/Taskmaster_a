@@ -1,18 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authservice';
-import { Router } from '@angular/router';
+import {  RouterLink } from '@angular/router';
+import { TaskService } from '../../services/taskservice';
+import { TaskItem } from '../../interfaces/task-item';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './dashboard.html'
 })
 
-export class DashboardPage{
-constructor(private auth: AuthService, private router: Router) {}
-onLogout() {
-this.auth.logout()
-}
+export class DashboardPage implements OnInit{
+  constructor(private taskservice : TaskService , private auth: AuthService) {}
+
+  tasks: TaskItem[] = [];
+  
+  ngOnInit(){
+    this.taskservice.getTasks().subscribe({
+            next: (data) => {
+              this.tasks = data;
+            },
+            error: (err) => {
+              console.error('Error fetching tasks:', err);
+            }
+          });
+  }
+
+  onLogout() {
+    this.auth.logout()
+  }
 }

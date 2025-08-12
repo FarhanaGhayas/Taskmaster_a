@@ -15,7 +15,7 @@
     </button>
 
     <h1 class="h5 m-0">TaskMaster</h1>
-
+    <h3 class="">Welcome, {{ userName }}</h3>
     <button (click)="onLogout()" class="btn btn-light btn-sm">Logout</button>
   </header>
 
@@ -35,12 +35,13 @@
      <main class="col-lg-10 p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Your Tasks</h2>
-        
-        <button class="btn btn-success btn-sm">+ Add Task</button>
+
+        <button class="btn btn-success btn-sm" type="button" data-bs-target="#addTaskModal" data-bs-toggle="modal" >+ Add Task</button>
       </div>
 
       <div class="row g-3">
-        <div class="col-md-6 col-xl-4" *ngFor="let task of tasks">
+        @for( task of tasks ; track task.id){
+        <div class="col-md-6 col-xl-4" >
           <div class="card shadow-sm h-100">
             <div class="card-body">
                 
@@ -53,11 +54,57 @@
             </div>
             <div class="card-footer d-flex justify-content-end gap-2">
               <button class="btn btn-sm btn-outline-primary">Edit</button>
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
+              <button class="btn btn-sm btn-outline-danger" (click) = 'dltTask(task.id)'>Delete</button>
             </div>
           </div>
         </div>
+      }
       </div>
     </main>
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form [formGroup]="taskform" (ngSubmit)="onAddTask()">
+          <div class="mb-3">
+            <label for="taskTitle" class="form-label">Title</label>
+            <input 
+              type="text" 
+              id="taskTitle" 
+              class="form-control" 
+              formControlName="title" 
+              placeholder="Enter task title" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Description</label>
+            <textarea 
+              id="taskDescription" 
+              class="form-control" 
+              formControlName="description" 
+              placeholder="Enter task description"></textarea>
+          </div>
+        
+     
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"  [disabled]="taskform.invalid">Save Task</button>
+      </div>
+</form>
+    </div>
   </div>
 </div>

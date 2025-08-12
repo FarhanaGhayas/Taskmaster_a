@@ -1,0 +1,44 @@
+!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <form [formGroup]="taskForm" (ngSubmit)="onAddTask()">
+          <div class="mb-3">
+            <label for="taskTitle" class="form-label">Title</label>
+            <input 
+              type="text" 
+              id="taskTitle" 
+              class="form-control" 
+              formControlName="title" 
+              placeholder="Enter task title" 
+              required>
+          </div>
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Description</label>
+            <textarea 
+              id="taskDescription" 
+              class="form-control" 
+              formControlName="description" 
+              placeholder="Enter task description"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="onAddTask()">Save Task</button>
+      </div>
+
+    </div>
+  </div>
+</div>

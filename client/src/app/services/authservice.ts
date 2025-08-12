@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { AuthResponse } from '../interfaces/AuthResponse';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,13 @@ export class AuthService {
 
   login(email: string, password: string)
   {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/api/Auth/login`,{email,password});
+    
+    return this.http.post<AuthResponse>(`${this.apiUrl}/api/Auth/login`,{email,password}).pipe(
+    tap(res => {
+      localStorage.setItem('token', res.token); // Save token
+      localStorage.setItem('username', email);  // Save username/email after success
+    })
+  );
 
   }
 

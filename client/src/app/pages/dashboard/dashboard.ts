@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authservice';
 import {  RouterLink } from '@angular/router';
 import { TaskService } from '../../services/taskservice';
 import { TaskItem } from '../../interfaces/task-item';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
+
 
 @Component({
   standalone: true,
@@ -20,7 +20,7 @@ export class DashboardPage implements OnInit{
    userName = localStorage.getItem('username');
    taskform : FormGroup;
 
-  constructor(private fb:FormBuilder, private taskservice : TaskService , private auth: AuthService) {
+  constructor(private ngZone: NgZone,private cd: ChangeDetectorRef, private fb:FormBuilder, private taskservice : TaskService , private auth: AuthService) {
     this.taskform = this.fb.group({
       title: ['', Validators.required],
       description : ['', Validators.required]
@@ -32,16 +32,7 @@ export class DashboardPage implements OnInit{
  
   ngOnInit(){
    console.log('Dashboard Initialize');
-    this.taskservice.getTasks().subscribe({
-            next: (data) => {
-            
-              this.tasks = data;
-            
-            },
-            error: (err) => {
-              console.error('Error fetching tasks:', err);
-            }
-          });
+    this.getTasks();
   }
 
   onLogout() {
@@ -53,8 +44,8 @@ export class DashboardPage implements OnInit{
 
     this.taskservice.createTask(this.taskform.value).subscribe(() => {
       this.taskform.reset();
- 
-      this.taskservice.getTasks().subscribe(data => this.tasks = data); // Refresh list
+      alert('✅ Task added successfully');
+     this.getTasks();
     });
   }
 
@@ -74,4 +65,19 @@ export class DashboardPage implements OnInit{
 
 
   }
+   getTasks() {
+      this.taskservice.getTasks().subscribe({
+            next: (data) => {
+             this.ngZone.run(() => {
+              this.tasks = data;
+              this.cd.detectChanges(); // Force refresh
+             });
+            },
+            error: (err) => {
+              console.error('Error fetching tasks:', err);
+            }
+          });
+  }
+
 }
+

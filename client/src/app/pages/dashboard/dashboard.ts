@@ -16,6 +16,7 @@ import * as bootstrap from 'bootstrap';
 
 export class DashboardPage implements OnInit{
 
+
    modalMode : 'add' | 'edit' = 'add';
    currentTaskId: number | null = null;
    userName = localStorage.getItem('username');
@@ -127,6 +128,14 @@ showModal() {
             }
           });
   }
+toggleTaskCompletion(task: TaskItem) {
+  const newStatus = !task.isCompleted;
 
+  this.taskservice.patchTask(task.id, { isCompleted: newStatus }).subscribe({
+    next: (updatedTask) => {
+      task.isCompleted = updatedTask.isCompleted; // Update UI immediately
+    },
+    error: (err) => console.error('Failed to update task:', err)
+  });
 }
-
+}

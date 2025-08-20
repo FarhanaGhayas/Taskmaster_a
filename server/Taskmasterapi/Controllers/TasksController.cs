@@ -15,14 +15,14 @@ public class TasksController : ControllerBase
     {
         _context = context;
     }
-   // private static List<TaskItem> tasks = new();
+    // private static List<TaskItem> tasks = new();
 
     [HttpGet]
     public async Task<IActionResult> GetTasks()
     {
         var email = User.Identity?.Name;
         Console.WriteLine("Email from token: " + email);
-        var userTasks =await _context.tasks.Where(t => t.UserEmail == email).ToListAsync();
+        var userTasks = await _context.tasks.Where(t => t.UserEmail == email).ToListAsync();
         return Ok(userTasks);
         /*var user = HttpContext.User.Identity.Name;
         if (!User.Identity.IsAuthenticated)
@@ -42,7 +42,7 @@ public class TasksController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskItem updTask)
     {
-  var task = await _context.tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserEmail == User.Identity.Name);
+        var task = await _context.tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserEmail == User.Identity.Name);
         if (task == null) return NotFound();
 
         task.Title = updTask.Title;
@@ -61,5 +61,16 @@ public class TasksController : ControllerBase
         _context.tasks.Remove(task);
         await _context.SaveChangesAsync();
         return Ok(new { message = "Task deleted" });
+    }
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> UpdateTaskStatus(int id, [FromBody] TaskItem taskUpdate)
+    {
+        var task = await _context.tasks.FindAsync(id);
+        if (task == null) return NotFound();
+
+            task.IsCompleted = taskUpdate.IsCompleted;
+
+        await _context.SaveChangesAsync();
+        return Ok(task);
     }
 }

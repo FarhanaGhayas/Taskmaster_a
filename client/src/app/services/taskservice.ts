@@ -22,9 +22,12 @@ export class TaskService {
     updateTask(id : number, task : TaskItem){
         return this.http.put<TaskItem>(`${this.apiUrl}/${id}`, task)
     }
+  
     dltTask(id : number){ 
         return this.http.delete(`${this.apiUrl}/${id}`);
     }
 
-
+    patchTask(id: number, fields: Partial<TaskItem>) {
+      return this.http.patch<TaskItem>(`${this.apiUrl}/${id}`, fields);
+    }
 }

@@ -48,7 +48,8 @@
               <h5 class="card-title d-flex justify-content-between align-items-center">{{ task.title }} <input  class="form-check-input"
                         type="checkbox"
                         [checked]="task.isCompleted"
-                         id="check-{{ task.id }}" /></h5>
+                      (change)="toggleTaskCompletion(task)" 
+                        id="check-{{ task.id }}"/></h5>
               
               <p class="card-text">{{ task.description }}</p>
             </div>

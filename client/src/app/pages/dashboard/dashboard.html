@@ -36,7 +36,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Your Tasks</h2>
 
-        <button class="btn btn-success btn-sm" type="button" data-bs-target="#addTaskModal" data-bs-toggle="modal" >+ Add Task</button>
+        <button class="btn btn-success btn-sm" type="button" (click)="openAddModal()" >+ Add Task</button>
       </div>
 
       <div class="row g-3">
@@ -53,7 +53,7 @@
               <p class="card-text">{{ task.description }}</p>
             </div>
             <div class="card-footer d-flex justify-content-end gap-2">
-              <button class="btn btn-sm btn-outline-primary">Edit</button>
+              <button class="btn btn-sm btn-outline-primary" (click)= 'openEditModal(task)'>Edit</button>
               <button class="btn btn-sm btn-outline-danger" (click) = 'dltTask(task.id)'>Delete</button>
             </div>
           </div>
@@ -64,20 +64,20 @@
   </div>
 </div>
 
-<!-- Add Task Modal -->
-<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+<!-- Add/Edit Task Modal -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       
       <!-- Header -->
       <div class="modal-header">
-        <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+        <h5 class="modal-title" id="addTaskModalLabel">{{ modalMode === 'add' ? 'Add New Task' : 'Edit Task' }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <!-- Body -->
       <div class="modal-body">
-        <form [formGroup]="taskform" (ngSubmit)="onAddTask()">
+        <form [formGroup]="taskform" (ngSubmit)="onSubmitTask()">
           <div class="mb-3">
             <label for="taskTitle" class="form-label">Title</label>
             <input 
@@ -102,7 +102,7 @@
       <!-- Footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"  [disabled]="taskform.invalid">Save Task</button>
+        <button type="submit" class="btn btn-primary"  [disabled]="taskform.invalid">{{modalMode === 'add' ? 'Save Task' : 'Edit Task'}}</button>
       </div>
 </form>
     </div>
